@@ -2,6 +2,7 @@ package com.fiap.tech_challenge_2.service.impl;
 
 import com.fiap.tech_challenge_2.model.Car;
 import com.fiap.tech_challenge_2.model.ParkingLot;
+import com.fiap.tech_challenge_2.model.ParkingLotStatus;
 import com.fiap.tech_challenge_2.model.ParkingMeter;
 import com.fiap.tech_challenge_2.repository.ParkingLotRepository;
 import com.fiap.tech_challenge_2.repository.ParkingMeterRepository;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Service
 public class ParkingServiceImpl implements ParkingService {
@@ -44,11 +46,15 @@ public class ParkingServiceImpl implements ParkingService {
     public ResponseEntity<?> unpark(String parkingMeterId) {
         try {
             ParkingMeter parkingMeter = this.findParkingMeterById(parkingMeterId);
+            ParkingLot parkingLot = this.findParkingLotById(parkingMeter.getParkingLot().getId());
+            parkingLot.setParkingLotStatus(ParkingLotStatus.ENDED);
+            Integer parkingTime = parkingLot.getParkingTime();
+            this.parkingLotRepository.save(parkingLot);
             parkingMeter.setParkingLot(null);
             this.parkingMeterRepository.save(parkingMeter);
             return ResponseEntity
                     .status(HttpStatus.OK)
-                    .build();
+                    .body("You parked for " + parkingTime);
         } catch (Exception exception) {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
