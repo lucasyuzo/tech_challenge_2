@@ -22,4 +22,8 @@ public class Address {
 
     @NotNull(message = "zipCode field can't be null")
     private String zipCode;
+
+    public String toString() {
+        return "Address: " + this.state + " - " + this.city + " - " + this.neighborhood + " - " + this.street;
+    }
 }

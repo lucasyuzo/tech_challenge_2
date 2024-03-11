@@ -27,19 +27,20 @@ public class ParkingLot {
 
     private ParkingLotStatus status;
 
-    private LocalTime parkingTime;
-
     @NotNull
     private String parkingMeterId;
+
+    private String stringfiedAddress;
 
     @Version
     private Long version;
 
-    public ParkingLot(Car car, LocalDateTime initialTime, LocalDateTime endTime, String parkingMeterId) {
+    public ParkingLot(Car car, LocalDateTime initialTime, LocalDateTime endTime, String parkingMeterId, String stringfiedAddress) {
         this.setCar(car);
         this.setInitialTime(initialTime);
         this.setEndTime(endTime);
         this.setParkingMeterId(parkingMeterId);
+        this.setStringfiedAddress(stringfiedAddress);
     }
 
     public void setParkingLotStatus() {

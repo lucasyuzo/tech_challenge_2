@@ -153,18 +153,14 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public ResponseEntity<Page<ParkingLot>> searchParkingLotsByParkingMeter(String parkingMeterId, LocalDateTime initialDate, LocalDateTime endDate) {
+    public ResponseEntity<Page<ParkingLot>> searchParkingLotsByParkingMeterId(String parkingMeterId) {
         Criteria criteria = new Criteria();
         criteria.and("id").is(parkingMeterId);
-        if (initialDate != null && endDate != null) {
-            criteria.and("initialTime").gte(initialDate);
-            criteria.and("endTime").lte(endDate);
-        } else if (initialDate != null) {
-            criteria.and("initialTime").gte(initialDate);
-        } else if (endDate != null) {
-            criteria.and("endTime").is(endDate);
-        }
-        Query query = new Query(criteria);
+        Query query = new Query(
+                Criteria
+                    .where("parkingMeterId")
+                    .is(parkingMeterId)
+        );
         List<ParkingLot> result = this.mongoTemplate.find(query, ParkingLot.class);
         Page<ParkingLot> page = new PageImpl<ParkingLot>(result);
         return ResponseEntity

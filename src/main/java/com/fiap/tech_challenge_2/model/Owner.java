@@ -9,4 +9,8 @@ public class Owner {
     private String lastName;
     @CPF
     private String cpf;
+
+    public String toString() {
+        return "Owner: " + this.firstName + " " + this.lastName + " - " + this.cpf;
+    }
 }

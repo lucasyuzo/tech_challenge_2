@@ -8,4 +8,8 @@ public class Car {
     private String model;
     private String plate;
     private Owner owner;
+
+    public String toString() {
+        return "Car: " + this.brand + " - " + this.model + " - " + this.plate;
+    }
 }

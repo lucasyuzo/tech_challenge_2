@@ -28,9 +28,11 @@ public class ParkingServiceImpl implements ParkingService {
     public ResponseEntity<?> park(String parkingMeterId, Car car, LocalDateTime initialTime, LocalDateTime endTime) {
         try {
             ParkingMeter parkingMeter = this.findParkingMeterById(parkingMeterId);
-            ParkingLot parkingLot = new ParkingLot(car, initialTime, endTime, parkingMeterId);
+            ParkingLot parkingLot = new ParkingLot(car, initialTime, endTime, parkingMeterId, parkingMeter.getAddress().toString());
             parkingLot = this.parkingLotRepository.save(parkingLot);
-            parkingMeter.setParkingLot(parkingLot);
+            parkingMeter.setParkingLotId(parkingLot.getId());
+            parkingMeter.setStringfiedCar(parkingLot.getCar().toString());
+            parkingMeter.setStringfiedOwner(parkingLot.getCar().getOwner().toString());
             this.parkingMeterRepository.save(parkingMeter);
             return ResponseEntity
                     .status(HttpStatus.OK)
@@ -46,15 +48,17 @@ public class ParkingServiceImpl implements ParkingService {
     public ResponseEntity<?> unpark(String parkingMeterId) {
         try {
             ParkingMeter parkingMeter = this.findParkingMeterById(parkingMeterId);
-            ParkingLot parkingLot = this.findParkingLotById(parkingMeter.getParkingLot().getId());
+            ParkingLot parkingLot = this.findParkingLotById(parkingMeter.getParkingLotId());
             parkingLot.setParkingLotStatus(ParkingLotStatus.ENDED);
             Integer parkingTime = parkingLot.getParkingTime();
             this.parkingLotRepository.save(parkingLot);
-            parkingMeter.setParkingLot(null);
+            parkingMeter.setParkingLotId(null);
+            parkingMeter.setStringfiedCar(null);
+            parkingMeter.setStringfiedOwner(null);
             this.parkingMeterRepository.save(parkingMeter);
             return ResponseEntity
                     .status(HttpStatus.OK)
-                    .body("You parked for " + parkingTime);
+                    .body("You parked for " + parkingTime + " hour(s)");
         } catch (Exception exception) {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)

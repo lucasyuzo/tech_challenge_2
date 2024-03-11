@@ -1,6 +1,7 @@
 package com.fiap.tech_challenge_2.model;
 
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
@@ -18,14 +19,19 @@ public class ParkingMeter {
     @NotNull(message = "address field can't be null")
     private Address address;
 
-    @DBRef
-    private ParkingLot parkingLot;
+    private String parkingLotId;
+
+    private String stringfiedCar;
+
+    private String stringfiedOwner;
 
     @Version
     private Long version;
 
     public ParkingMeter(Address address) {
         this.setAddress(address);
-        this.setParkingLot(null);
+        this.setParkingLotId(null);
+        this.setStringfiedCar(null);
+        this.setStringfiedOwner(null);
     }
 }

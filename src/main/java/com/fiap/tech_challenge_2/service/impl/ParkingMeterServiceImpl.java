@@ -68,7 +68,7 @@ public class ParkingMeterServiceImpl implements ParkingMeterService {
                         .status(HttpStatus.NOT_FOUND)
                         .body("Parking meter not found");
             }
-            if (currentParkingMeter.getParkingLot() != null) {
+            if (currentParkingMeter.getParkingLotId() != null) {
                 return ResponseEntity
                         .status(HttpStatus.CONFLICT)
                         .body("Unpark first to update");
@@ -94,7 +94,7 @@ public class ParkingMeterServiceImpl implements ParkingMeterService {
                         .status(HttpStatus.NOT_FOUND)
                         .body("Parking meter not found");
             }
-            if (parkingMeter.getParkingLot() != null) {
+            if (parkingMeter.getParkingLotId() != null) {
                 return ResponseEntity
                         .status(HttpStatus.CONFLICT)
                         .body("Unpark first to delete");
